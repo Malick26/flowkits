@@ -4,6 +4,7 @@ import "./globals.css";
 import { CartProvider } from "@/features/cart/CartProvider";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
+import { BrandLoadingScreen } from "@/components/transition/BrandLoadingScreen";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,6 +33,7 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col bg-[radial-gradient(1200px_800px_at_20%_0%,rgba(99,102,241,0.18),transparent_65%),radial-gradient(1200px_800px_at_80%_0%,rgba(236,72,153,0.14),transparent_60%)]">
         <CartProvider>
+          <BrandLoadingScreen />
           <Navbar />
           <main className="flex-1">{children}</main>
           <Footer />
