@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { motion } from "framer-motion";
-import type { Neighborhood } from "@/lib/storeTypes";
 import { useCart } from "@/features/cart/useCart";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
