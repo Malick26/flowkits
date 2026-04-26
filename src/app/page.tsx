@@ -2,6 +2,7 @@ import Link from "next/link";
 import { listProducts } from "@/lib/data/products";
 import { Container } from "@/components/layout/Container";
 import { formatMoneyCents } from "@/lib/money";
+import { FadeIn } from "@/components/ui/FadeIn";
 
 export default function Home() {
   return <HomePage />;
@@ -115,9 +116,13 @@ async function HomePage() {
                 color: "from-white/6 to-white/2 border-white/10",
                 dot: "bg-white/60",
               },
-            ].map((item) => (
-              <div
+            ].map((item, index) => (
+              <FadeIn
                 key={item.step}
+                delay={index * 0.15}
+                direction="right"
+                distance={60}
+                stiffness={70}
                 className={`relative overflow-hidden rounded-2xl border bg-gradient-to-br p-5 ${item.color}`}
               >
                 <span className="text-4xl font-bold tracking-tighter text-white/6 select-none absolute right-4 top-3">
@@ -126,7 +131,7 @@ async function HomePage() {
                 <span className={`mb-3 block h-2 w-2 rounded-full ${item.dot}`} />
                 <p className="font-semibold text-sm text-white">{item.title}</p>
                 <p className="mt-1 text-xs leading-5 text-white/50">{item.desc}</p>
-              </div>
+              </FadeIn>
             ))}
           </div>
         </section>
@@ -142,12 +147,21 @@ async function HomePage() {
           </div>
 
           <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {products.map((p) => (
-              <Link
-                key={p.id}
-                href={`/product/${p.slug}`}
-                className="group focus-visible:outline focus-visible:outline-2 focus-visible:outline-indigo-400 overflow-hidden rounded-2xl border border-white/8 bg-white/4 transition-all duration-200 hover:border-indigo-500/30 hover:bg-white/6 hover:shadow-[0_8px_32px_-8px_rgba(99,102,241,0.25)]"
+            {products.map((p, index) => (
+              <FadeIn 
+                key={p.id} 
+                delay={index * 0.1} 
+                direction="up" 
+                distance={15} 
+                scale={1} 
+                blur={false}
+                stiffness={50}
+                damping={20}
               >
+                <Link
+                  href={`/product/${p.slug}`}
+                  className="block h-full group focus-visible:outline focus-visible:outline-2 focus-visible:outline-indigo-400 overflow-hidden rounded-2xl border border-white/8 bg-white/4 transition-all duration-200 hover:border-indigo-500/30 hover:bg-white/6 hover:shadow-[0_8px_32px_-8px_rgba(99,102,241,0.25)]"
+                >
                 {/* Image */}
                 <div className="relative aspect-[4/3] overflow-hidden bg-white/4">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -204,36 +218,39 @@ async function HomePage() {
                   </div>
                 </div>
               </Link>
+            </FadeIn>
             ))}
           </div>
         </section>
 
         {/* ── TRUST STRIP ── */}
-        <section className="mt-10 overflow-hidden rounded-2xl border border-white/8 bg-gradient-to-br from-white/5 to-white/2 p-5">
-          <div className="flex flex-wrap items-center justify-between gap-4">
-            <div className="flex flex-wrap gap-6">
-              {[
-                { icon: "🚚", label: "Livraison dans tout le pays" },
-                { icon: "💳", label: "Paiement à la livraison" },
-                { icon: "↩", label: "Retour facile sous 7 jours" },
-                { icon: "💬", label: "Support réactif" },
-              ].map((item) => (
-                <div key={item.label} className="flex items-center gap-2">
-                  <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-white/6 text-sm">
-                    {item.icon}
-                  </span>
-                  <span className="text-xs text-white/50">{item.label}</span>
-                </div>
-              ))}
+        <FadeIn delay={0.2} direction="none" scale={1} stiffness={60}>
+          <section className="mt-10 overflow-hidden rounded-2xl border border-white/8 bg-gradient-to-br from-white/5 to-white/2 p-5">
+            <div className="flex flex-wrap items-center justify-between gap-4">
+              <div className="flex flex-wrap gap-6">
+                {[
+                  { icon: "🚚", label: "Livraison dans tout le pays" },
+                  { icon: "💳", label: "Paiement à la livraison" },
+                  { icon: "↩", label: "Retour facile sous 7 jours" },
+                  { icon: "💬", label: "Support réactif" },
+                ].map((item) => (
+                  <div key={item.label} className="flex items-center gap-2">
+                    <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-white/6 text-sm">
+                      {item.icon}
+                    </span>
+                    <span className="text-xs text-white/50">{item.label}</span>
+                  </div>
+                ))}
+              </div>
+              <a
+                href="#products"
+                className="shrink-0 inline-flex h-9 items-center gap-2 rounded-xl bg-gradient-to-b from-indigo-400/90 to-indigo-500 px-4 text-xs font-semibold text-white shadow-[0_8px_24px_-8px_rgba(99,102,241,0.6)] transition hover:from-indigo-300/90 active:scale-[0.98]"
+              >
+                Voir la collection
+              </a>
             </div>
-            <a
-              href="#products"
-              className="shrink-0 inline-flex h-9 items-center gap-2 rounded-xl bg-gradient-to-b from-indigo-400/90 to-indigo-500 px-4 text-xs font-semibold text-white shadow-[0_8px_24px_-8px_rgba(99,102,241,0.6)] transition hover:from-indigo-300/90 active:scale-[0.98]"
-            >
-              Voir la collection
-            </a>
-          </div>
-        </section>
+          </section>
+        </FadeIn>
 
       </Container>
     </div>
