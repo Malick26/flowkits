@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { createOrderSchema } from "@/features/checkout/orderSchema";
 import { getSupabaseAdmin } from "@/lib/supabase/admin";
-import { MOCK_NEIGHBORHOODS, MOCK_PRODUCTS } from "@/lib/mockData";
+import { MOCK_PRODUCTS } from "@/lib/mockData";
 
 type ProductRow = { id: string; name: string; price_cents: number; stock: number };
 
