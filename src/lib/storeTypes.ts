@@ -9,7 +9,11 @@ export type Product = {
   active: boolean;
   stock: number;
 };
-
+export type Neighborhood = {
+  id: string;
+  name: string;
+  feeCents: number;
+};
 
 
 export type OrderStatus = "new" | "confirmed" | "delivering" | "done" | "cancelled";

@@ -1,5 +1,16 @@
-import type { Product } from "./storeTypes";
+import type { Product, Neighborhood } from "./storeTypes";
 
+export const MOCK_NEIGHBORHOODS: Neighborhood[] = [
+  { id: "n1", name: "Dakar Plateau", feeCents: 1000 },
+  { id: "n2", name: "Almadies", feeCents: 1500 },
+  { id: "n3", name: "Ouakam", feeCents: 1000 },
+  { id: "n4", name: "Ngor", feeCents: 1500 },
+  { id: "n5", name: "Yoff", feeCents: 1500 },
+  { id: "n6", name: "Parcelles Assainies", feeCents: 2000 },
+  { id: "n7", name: "Guediawaye", feeCents: 2500 },
+  { id: "n8", name: "Pikine", feeCents: 2500 },
+  { id: "n9", name: "Rufisque", feeCents: 3000 },
+];
 export const MOCK_PRODUCTS: Product[] = [
   {
     id: "p1",
