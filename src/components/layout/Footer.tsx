@@ -6,6 +6,9 @@ export function Footer() {
       <Container className="flex flex-col gap-2 py-8 text-sm text-white/55 sm:flex-row sm:items-center sm:justify-between">
         <p>© {new Date().getFullYear()} FlowKits</p>
         <p className="text-white/45">Paiement à la livraison (COD).</p>
+        <p className="text-white/30 text-xs tracking-[0.3em] uppercase font-medium text-center">
+  — DAIKI —
+</p>
       </Container>
     </footer>
   );
