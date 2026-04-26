@@ -1,5 +1,6 @@
 "use client";
 
+import * as React from "react";
 import Link from "next/link";
 import { ShoppingBag } from "lucide-react";
 import { Container } from "@/components/layout/Container";
@@ -8,6 +9,11 @@ import { useCart } from "@/features/cart/useCart";
 
 export function Navbar({ className }: { className?: string }) {
   const { count } = useCart();
+  const [mounted, setMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
 
   return (
     <header className={cn("sticky top-0 z-50 border-b border-white/8 bg-black/20 backdrop-blur-xl", className)}>
@@ -26,7 +32,7 @@ export function Navbar({ className }: { className?: string }) {
           >
             <ShoppingBag className="h-4 w-4" />
             Panier
-            {count > 0 ? (
+            {mounted && count > 0 ? (
               <span className="ml-1 inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-indigo-500 px-1 text-xs font-semibold text-white">
                 {count}
               </span>

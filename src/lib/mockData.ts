@@ -1,4 +1,4 @@
-import type { Neighborhood, Product } from "./storeTypes";
+import type { Product } from "./storeTypes";
 
 export const MOCK_PRODUCTS: Product[] = [
   {
@@ -12,6 +12,7 @@ export const MOCK_PRODUCTS: Product[] = [
     ],
     sizes: ["S", "M", "L", "XL"],
     active: true,
+    stock: 50,
   },
   {
     id: "p2",
@@ -24,6 +25,7 @@ export const MOCK_PRODUCTS: Product[] = [
     ],
     sizes: ["S", "M", "L", "XL", "XXL"],
     active: true,
+    stock: 0, // Out of stock for testing
   },
   {
     id: "p3",
@@ -36,19 +38,6 @@ export const MOCK_PRODUCTS: Product[] = [
     ],
     sizes: ["M", "L", "XL"],
     active: true,
+    stock: 20,
   },
 ];
-
-export const MOCK_NEIGHBORHOODS: Neighborhood[] = [
-  { id: "n1", name: "Plateau", feeCents: 1500 * 100 },
-  { id: "n2", name: "Médina", feeCents: 2000 * 100 },
-  { id: "n3", name: "Point E", feeCents: 2500 * 100 },
-  { id: "n4", name: "Almadies", feeCents: 3500 * 100 },
-  { id: "n5", name: "Yoff", feeCents: 3000 * 100 },
-  { id: "n6", name: "Sacré-Cœur", feeCents: 2500 * 100 },
-  { id: "n7", name: "Ouakam", feeCents: 3000 * 100 },
-  { id: "n8", name: "Parcelles", feeCents: 3500 * 100 },
-  { id: "n9", name: "Pikine", feeCents: 4000 * 100 },
-  { id: "n10", name: "Guédiawaye", feeCents: 4500 * 100 },
-];
-

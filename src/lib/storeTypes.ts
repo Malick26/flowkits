@@ -7,13 +7,10 @@ export type Product = {
   images: string[];
   sizes: string[];
   active: boolean;
+  stock: number;
 };
 
-export type Neighborhood = {
-  id: string;
-  name: string;
-  feeCents: number;
-};
+
 
 export type OrderStatus = "new" | "confirmed" | "delivering" | "done" | "cancelled";
 
@@ -23,9 +20,7 @@ export type Order = {
   customerFirstName: string;
   customerLastName: string;
   phone: string;
-  neighborhoodId: string;
-  neighborhoodName: string;
-  deliveryFeeCents: number;
+  address: string;
   subtotalCents: number;
   totalCents: number;
   status: OrderStatus;

@@ -13,11 +13,7 @@ import { Select } from "@/components/ui/Select";
 import { formatMoneyCents } from "@/lib/money";
 import { createOrderSchema, type CreateOrderInput } from "./orderSchema";
 
-export function CheckoutClient({
-  neighborhoods,
-}: {
-  neighborhoods: Neighborhood[];
-}) {
+export function CheckoutClient() {
   const router = useRouter();
   const { items, subtotalCents, clear } = useCart();
   const [error, setError] = React.useState<string | null>(null);
@@ -30,17 +26,13 @@ export function CheckoutClient({
       customerFirstName: "",
       customerLastName: "",
       phone: "",
-      neighborhoodId: "",
+      address: "",
       items: [],
     },
     mode: "onChange",
   });
 
-  const neighborhood = neighborhoods.find(
-    (n) => n.id === form.watch("neighborhoodId"),
-  );
-  const deliveryFeeCents = neighborhood?.feeCents ?? 0;
-  const totalCents = subtotalCents + deliveryFeeCents;
+  const totalCents = subtotalCents;
 
   React.useEffect(() => {
     form.setValue(
@@ -66,7 +58,7 @@ export function CheckoutClient({
       <div className="lg:col-span-2">
         <h1 className="text-2xl font-semibold tracking-tight">Validation</h1>
         <p className="mt-1 text-sm text-white/55">
-          Paiement à la livraison. Livraison selon quartier.
+          Paiement à la livraison. Livraison possible partout à Dakar.
         </p>
 
         <form
@@ -123,16 +115,11 @@ export function CheckoutClient({
               />
             </div>
             <div>
-              <label className="text-sm font-medium text-white/75">Quartier</label>
-              <Select
+              <label className="text-sm font-medium text-white/75">Adresse de livraison</label>
+              <Input
                 className="mt-2"
-                value={form.watch("neighborhoodId")}
-                onChange={(v) => form.setValue("neighborhoodId", v, { shouldValidate: true })}
-                placeholder="Choisir un quartier"
-                options={neighborhoods.map((n) => ({
-                  value: n.id,
-                  label: `${n.name} — ${formatMoneyCents(n.feeCents)}`,
-                }))}
+                placeholder="Ex: Parcelles Assainies U15"
+                {...form.register("address")}
               />
             </div>
           </div>
@@ -162,12 +149,7 @@ export function CheckoutClient({
               {formatMoneyCents(subtotalCents)}
             </span>
           </div>
-          <div className="flex items-center justify-between text-white/70">
-            <span>Livraison</span>
-            <span className="font-semibold text-white">
-              {formatMoneyCents(deliveryFeeCents)}
-            </span>
-          </div>
+
           <div className="h-px bg-white/10" />
           <div className="flex items-center justify-between">
             <span className="text-white/70">Total</span>

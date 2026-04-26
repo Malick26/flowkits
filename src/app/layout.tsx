@@ -5,6 +5,7 @@ import { CartProvider } from "@/features/cart/CartProvider";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { BrandLoadingScreen } from "@/components/transition/BrandLoadingScreen";
+import { SupportChatbot } from "@/components/ui/SupportChatbot";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -37,6 +38,7 @@ export default function RootLayout({
           <Navbar />
           <main className="flex-1">{children}</main>
           <Footer />
+          <SupportChatbot />
         </CartProvider>
       </body>
     </html>

@@ -11,6 +11,7 @@ export function AddToCartCard({ product }: { product: Product }) {
   const { addItem } = useCart();
   const [size, setSize] = React.useState<string>(product.sizes[0] ?? "M");
   const [added, setAdded] = React.useState(false);
+  const isSoldOut = product.stock <= 0;
 
   return (
     <div className="glass rounded-3xl p-5">
@@ -22,13 +23,16 @@ export function AddToCartCard({ product }: { product: Product }) {
             onChange={setSize}
             options={product.sizes.map((s) => ({ value: s, label: s }))}
             className="mt-2"
+            disabled={isSoldOut}
           />
         </div>
 
         <div className="sm:w-56">
           <Button
             className="w-full"
+            disabled={isSoldOut}
             onClick={() => {
+              if (isSoldOut) return;
               addItem({
                 productId: product.id,
                 name: product.name,
@@ -41,7 +45,7 @@ export function AddToCartCard({ product }: { product: Product }) {
               window.setTimeout(() => setAdded(false), 900);
             }}
           >
-            Ajouter au panier
+            {isSoldOut ? "Épuisé" : "Ajouter au panier"}
           </Button>
           <motion.p
             initial={{ opacity: 0, y: 6 }}

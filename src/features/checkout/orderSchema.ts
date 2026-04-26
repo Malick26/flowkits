@@ -4,7 +4,7 @@ export const createOrderSchema = z.object({
   customerFirstName: z.string().min(2),
   customerLastName: z.string().min(2),
   phone: z.string().min(6),
-  neighborhoodId: z.string().min(1),
+  address: z.string().min(5),
   items: z
     .array(
       z.object({

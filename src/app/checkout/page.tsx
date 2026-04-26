@@ -1,16 +1,12 @@
 import { Container } from "@/components/layout/Container";
-import { listNeighborhoods } from "@/lib/data/neighborhoods";
 import { CheckoutClient } from "@/features/checkout/CheckoutClient";
 
-export default async function CheckoutPage() {
-  const neighborhoods = await listNeighborhoods();
-
+export default function CheckoutPage() {
   return (
     <div className="py-10">
       <Container>
-        <CheckoutClient neighborhoods={neighborhoods} />
+        <CheckoutClient />
       </Container>
     </div>
   );
 }
-

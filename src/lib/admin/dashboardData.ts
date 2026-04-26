@@ -46,7 +46,7 @@ export async function listAdminOrders() {
   const { data } = await admin
     .from("orders")
     .select(
-      "id, created_at, customer_first_name, customer_last_name, phone, neighborhood_name, delivery_fee_cents, subtotal_cents, total_cents, status, payment_method",
+      "id, created_at, customer_first_name, customer_last_name, phone, address, subtotal_cents, total_cents, status, payment_method",
     )
     .order("created_at", { ascending: false })
     .limit(100);
@@ -66,7 +66,7 @@ export async function getAdminOrder(orderId: string) {
     admin
       .from("orders")
       .select(
-        "id, created_at, customer_first_name, customer_last_name, phone, neighborhood_name, delivery_fee_cents, subtotal_cents, total_cents, status, payment_method",
+        "id, created_at, customer_first_name, customer_last_name, phone, address, subtotal_cents, total_cents, status, payment_method",
       )
       .eq("id", orderId)
       .maybeSingle(),
@@ -81,3 +81,18 @@ export async function getAdminOrder(orderId: string) {
   return { order, items: items ?? [] };
 }
 
+export async function listAdminSupportTickets() {
+  const canPersist = Boolean(
+    process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY,
+  );
+  if (!canPersist) return [];
+
+  const admin = getSupabaseAdmin();
+  const { data } = await admin
+    .from("support_tickets")
+    .select("*")
+    .order("created_at", { ascending: false })
+    .limit(50);
+
+  return data ?? [];
+}

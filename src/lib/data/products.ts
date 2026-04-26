@@ -11,6 +11,7 @@ type ProductRow = {
   images: unknown;
   sizes: unknown;
   active: boolean;
+  stock: number;
 };
 
 function mapProduct(row: ProductRow): Product {
@@ -23,6 +24,7 @@ function mapProduct(row: ProductRow): Product {
     images: Array.isArray(row.images) ? row.images : [],
     sizes: Array.isArray(row.sizes) ? row.sizes : ["S", "M", "L", "XL"],
     active: Boolean(row.active),
+    stock: Number(row.stock ?? 0),
   };
 }
 

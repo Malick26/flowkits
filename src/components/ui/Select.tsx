@@ -13,6 +13,7 @@ export function Select({
   className,
   name,
   required,
+  disabled,
 }: {
   value?: string;
   onChange?: (next: string) => void;
@@ -21,12 +22,14 @@ export function Select({
   className?: string;
   name?: string;
   required?: boolean;
+  disabled?: boolean;
 }) {
   return (
     <div className={cn("relative", className)}>
       <select
         name={name}
         required={required}
+        disabled={disabled}
         value={value ?? ""}
         onChange={(e) => onChange?.(e.target.value)}
         className={cn(

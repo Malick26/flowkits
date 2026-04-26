@@ -60,10 +60,7 @@ export default async function AdminOrderPage({
               </span>
             </div>
             <div className="flex items-center justify-between gap-10 text-white/70">
-              <span>Livraison ({order.neighborhood_name})</span>
-              <span className="font-semibold text-white">
-                {formatMoneyCents(order.delivery_fee_cents ?? 0)}
-              </span>
+              <span>Livraison ({order.address})</span>
             </div>
             <div className="h-px bg-white/10" />
             <div className="flex items-center justify-between gap-10">

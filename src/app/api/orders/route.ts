@@ -3,8 +3,7 @@ import { createOrderSchema } from "@/features/checkout/orderSchema";
 import { getSupabaseAdmin } from "@/lib/supabase/admin";
 import { MOCK_NEIGHBORHOODS, MOCK_PRODUCTS } from "@/lib/mockData";
 
-type ProductRow = { id: string; name: string; price_cents: number };
-type NeighborhoodRow = { id: string; name: string; fee_cents: number };
+type ProductRow = { id: string; name: string; price_cents: number; stock: number };
 
 export async function POST(req: Request) {
   try {
@@ -24,37 +23,16 @@ export async function POST(req: Request) {
 
     const admin = getSupabaseAdmin();
 
-    const [
-      { data: products, error: productsError },
-      { data: neighborhood, error: neighborhoodError },
-    ] = await Promise.all([
-      admin.from("products").select("id, name, price_cents").in("id", productIds),
-      admin
-        .from("neighborhoods")
-        .select("id, name, fee_cents")
-        .eq("id", input.neighborhoodId)
-        .maybeSingle(),
-    ]);
+    const { data: products, error: productsError } = await admin
+      .from("products")
+      .select("id, name, price_cents, stock")
+      .in("id", productIds);
 
     if (productsError) throw new Error(productsError.message);
-    if (neighborhoodError) throw new Error(neighborhoodError.message);
 
-    const productsMap = new Map<string, ProductRow>(
+    const productsMap = new Map<ProductRow["id"], ProductRow>(
       ((products ?? []) as unknown as ProductRow[]).map((p) => [p.id, p]),
     );
-
-    const resolvedNeighborhood: NeighborhoodRow | null =
-      ((neighborhood ?? null) as unknown as NeighborhoodRow | null) ??
-      null;
-
-    const fallbackNeighborhood =
-      MOCK_NEIGHBORHOODS.find((n) => n.id === input.neighborhoodId) ?? null;
-
-    const neighborhoodName = resolvedNeighborhood?.name ?? fallbackNeighborhood?.name;
-    const deliveryFeeCents =
-      resolvedNeighborhood?.fee_cents ?? fallbackNeighborhood?.feeCents ?? null;
-
-    if (!neighborhoodName || deliveryFeeCents == null) throw new Error("Quartier invalide.");
 
     const orderItems = input.items.map((it) => {
       const p =
@@ -62,6 +40,12 @@ export async function POST(req: Request) {
         MOCK_PRODUCTS.find((mp) => mp.id === it.productId) ??
         null;
       if (!p) throw new Error("Produit invalide.");
+      
+      const availableStock = "stock" in p ? p.stock : 0;
+      if (it.qty > availableStock) {
+        throw new Error(`Rupture de stock pour le produit: ${p.name}`);
+      }
+
       const unitPriceCents = "price_cents" in p ? p.price_cents : p.priceCents;
       return {
         product_id: it.productId,
@@ -74,7 +58,7 @@ export async function POST(req: Request) {
     });
 
     const subtotalCents = orderItems.reduce((acc, it) => acc + it.line_total_cents, 0);
-    const totalCents = subtotalCents + deliveryFeeCents;
+    const totalCents = subtotalCents;
 
     const { data: order, error: orderError } = await admin
       .from("orders")
@@ -82,9 +66,7 @@ export async function POST(req: Request) {
         customer_first_name: input.customerFirstName,
         customer_last_name: input.customerLastName,
         phone: input.phone,
-        neighborhood_id: input.neighborhoodId,
-        neighborhood_name: neighborhoodName,
-        delivery_fee_cents: deliveryFeeCents,
+        address: input.address,
         subtotal_cents: subtotalCents,
         total_cents: totalCents,
         status: "new",
@@ -103,6 +85,17 @@ export async function POST(req: Request) {
       })),
     );
     if (itemsError) throw new Error(itemsError.message);
+
+    // Decrement stock
+    for (const it of orderItems) {
+      const p = productsMap.get(it.product_id);
+      if (p) {
+        await admin
+          .from("products")
+          .update({ stock: p.stock - it.qty })
+          .eq("id", p.id);
+      }
+    }
 
     return NextResponse.json({ orderId }, { status: 200 });
   } catch (e: unknown) {
