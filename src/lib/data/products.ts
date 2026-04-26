@@ -34,7 +34,7 @@ export async function listProducts(): Promise<Product[]> {
     .from("products")
     .select("*")
     .eq("active", true)
-    .order("created_at", { ascending: false });
+    .order("sort_order", { ascending: true });
 
   if (error || !data) return MOCK_PRODUCTS;
   return (data as unknown as ProductRow[]).map(mapProduct);
